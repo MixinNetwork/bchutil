@@ -3,12 +3,14 @@ package bchutil
 import (
 	"bytes"
 	"encoding/hex"
+	"testing"
+
 	"github.com/btcsuite/btcd/btcec/v2"
+	"github.com/btcsuite/btcd/btcec/v2/ecdsa"
 	"github.com/btcsuite/btcd/btcutil"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcd/wire"
-	"testing"
 )
 
 type SigHashVector struct {
@@ -80,7 +82,7 @@ func TestCalulateSigHash(t *testing.T) {
 			if err != nil {
 				t.Error(err)
 			}
-			pubkey, err := btcec.ParsePubKey(pubKeyBytes, btcec.S256())
+			pubkey, err := btcec.ParsePubKey(pubKeyBytes)
 			if err != nil {
 				t.Error(err)
 			}
@@ -88,11 +90,12 @@ func TestCalulateSigHash(t *testing.T) {
 			if err != nil {
 				t.Error(err)
 			}
-			sig, err := btcec.ParseDERSignature(sigBytes, btcec.S256())
+			sig, err := ecdsa.ParseDERSignature(sigBytes)
 			if err != nil {
 				t.Error(err)
 			}
-			hash := calcBip143SignatureHash(prevScript, txscript.NewTxSigHashes(msgTx), txscript.SigHashAll, msgTx, idx, v.Inputs[idx].Value)
+			prevOutFetcher := txscript.NewCannedPrevOutputFetcher(prevScript, v.Inputs[idx].Value)
+			hash := calcBip143SignatureHash(prevScript, txscript.NewTxSigHashes(msgTx, prevOutFetcher), txscript.SigHashAll, msgTx, idx, v.Inputs[idx].Value)
 			if !sig.Verify(hash, pubkey) {
 				t.Errorf("Calcualted invalid hash for vector %d  input %d ", i, idx)
 			}

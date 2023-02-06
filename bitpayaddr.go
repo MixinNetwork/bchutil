@@ -8,6 +8,7 @@ import (
 	"errors"
 
 	"fmt"
+
 	"github.com/btcsuite/btcd/btcutil"
 	"github.com/btcsuite/btcd/btcutil/base58"
 	"github.com/btcsuite/btcd/chaincfg"
@@ -32,7 +33,7 @@ func (e UnsupportedWitnessVerError) Error() string {
 type UnsupportedWitnessProgLenError int
 
 func (e UnsupportedWitnessProgLenError) Error() string {
-	return "unsupported witness program length: " + string(e)
+	return "unsupported witness program length: " + e.Error()
 }
 
 // encodeAddress returns a human-readable payment address given a ripemd160 hash

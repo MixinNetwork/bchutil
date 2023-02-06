@@ -3,6 +3,7 @@ package bchutil
 import (
 	"errors"
 	"fmt"
+
 	"github.com/btcsuite/btcd/btcutil"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/txscript"
@@ -332,7 +333,7 @@ func DecodeCashAddress(str string) (string, data, error) {
 func CheckEncodeCashAddress(input []byte, prefix string, t AddressType) string {
 	k, err := packAddressData(t, input)
 	if err != nil {
-		fmt.Println("%v", err)
+		fmt.Println(err)
 		return ""
 	}
 	return Encode(prefix, k)
