@@ -3,10 +3,10 @@ module github.com/MixinNetwork/bchutil
 go 1.19
 
 require (
-	github.com/btcsuite/btcd v0.23.4
+	github.com/btcsuite/btcd v0.24.2
 	github.com/btcsuite/btcd/btcec/v2 v2.3.2
-	github.com/btcsuite/btcd/btcutil v1.1.3
-	github.com/btcsuite/btcd/chaincfg/chainhash v1.0.2
+	github.com/btcsuite/btcd/btcutil v1.1.5
+	github.com/btcsuite/btcd/chaincfg/chainhash v1.1.0
 	golang.org/x/crypto v0.5.0
 )
 
