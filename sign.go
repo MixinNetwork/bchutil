@@ -6,13 +6,13 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/btcsuite/btcd/address/v2"
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcec/v2/ecdsa"
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/btcsuite/btcd/chaincfg/v2"
+	"github.com/btcsuite/btcd/chainhash/v2"
+	"github.com/btcsuite/btcd/txscript/v2"
+	"github.com/btcsuite/btcd/wire/v2"
 )
 
 const (
@@ -169,7 +169,7 @@ func calcBip143SignatureHash(subScript []byte, sigHashes *txscript.TxSigHashes,
 
 func sign(chainParams *chaincfg.Params, tx *wire.MsgTx, idx int,
 	subScript []byte, hashType txscript.SigHashType, kdb txscript.KeyDB, sdb txscript.ScriptDB, amt int64) ([]byte,
-	txscript.ScriptClass, []btcutil.Address, int, error) {
+	txscript.ScriptClass, []address.Address, int, error) {
 
 	class, addresses, nrequired, err := txscript.ExtractPkScriptAddrs(subScript,
 		chainParams)
@@ -214,7 +214,7 @@ func sign(chainParams *chaincfg.Params, tx *wire.MsgTx, idx int,
 // the contract (i.e. nrequired signatures are provided).  Since it is arguably
 // legal to not be able to sign any of the outputs, no error is returned.
 func signMultiSig(tx *wire.MsgTx, idx int, subScript []byte, hashType txscript.SigHashType,
-	addresses []btcutil.Address, nRequired int, kdb txscript.KeyDB, amt int64) ([]byte, bool) {
+	addresses []address.Address, nRequired int, kdb txscript.KeyDB, amt int64) ([]byte, bool) {
 	// We start with a single OP_FALSE to work around the (now standard)
 	// but in the reference implementation that causes a spurious pop at
 	// the end of OP_CHECKMULTISIG.
@@ -260,7 +260,7 @@ func SignatureScript(tx *wire.MsgTx, idx int, subscript []byte, hashType txscrip
 }
 
 func mergeScripts(chainParams *chaincfg.Params, tx *wire.MsgTx, idx int,
-	pkScript []byte, class txscript.ScriptClass, addresses []btcutil.Address,
+	pkScript []byte, class txscript.ScriptClass, addresses []address.Address,
 	nRequired int, sigScript, prevScript []byte) []byte {
 	switch class {
 

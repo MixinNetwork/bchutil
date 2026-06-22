@@ -2,9 +2,10 @@ package bchutil
 
 import (
 	"bytes"
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
 	"testing"
+
+	"github.com/btcsuite/btcd/address/v2"
+	"github.com/btcsuite/btcd/chaincfg/v2"
 )
 
 func TestDecodeBitpay(t *testing.T) {
@@ -16,7 +17,7 @@ func TestDecodeBitpay(t *testing.T) {
 		t.Error("Decoding failed")
 	}
 
-	addr2, err := btcutil.DecodeAddress("15RmNZ9LQNxL8AEtJgU9Z4sAw3GqJK99vf", &chaincfg.MainNetParams)
+	addr2, err := address.DecodeAddress("15RmNZ9LQNxL8AEtJgU9Z4sAw3GqJK99vf", &chaincfg.MainNetParams)
 	if err != nil {
 		t.Error(err)
 	}
@@ -33,7 +34,7 @@ func TestDecodeBitpay(t *testing.T) {
 		t.Error("Decoding failed")
 	}
 
-	addr2, err = btcutil.DecodeAddress("38Wk9WegFfGHRdohRJ5npGQ6a1Xf9guvs6", &chaincfg.MainNetParams)
+	addr2, err = address.DecodeAddress("38Wk9WegFfGHRdohRJ5npGQ6a1Xf9guvs6", &chaincfg.MainNetParams)
 	if err != nil {
 		t.Error(err)
 	}

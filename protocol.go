@@ -1,6 +1,6 @@
 package bchutil
 
-import "github.com/btcsuite/btcd/wire"
+import "github.com/btcsuite/btcd/wire/v2"
 
 // Node_BitcoinCash service bit
 const SFNodeBitcoinCash wire.ServiceFlag = 1 << 5

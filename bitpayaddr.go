@@ -9,9 +9,9 @@ import (
 
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/btcutil/base58"
-	"github.com/btcsuite/btcd/chaincfg"
+	"github.com/btcsuite/btcd/address/v2"
+	"github.com/btcsuite/btcd/address/v2/base58"
+	"github.com/btcsuite/btcd/chaincfg/v2"
 	"golang.org/x/crypto/ripemd160"
 )
 
@@ -52,7 +52,7 @@ func encodeBitpayAddress(hash160 []byte, netID byte) string {
 // The bitcoin network the address is associated with is extracted if possible.
 // When the address does not encode the network, such as in the case of a raw
 // public key, the address will be associated with the passed defaultNet.
-func DecodeBitpay(addr string, defaultNet *chaincfg.Params) (btcutil.Address, error) {
+func DecodeBitpay(addr string, defaultNet *chaincfg.Params) (address.Address, error) {
 
 	// Switch on decoded length to determine the type.
 	decoded, netID, err := base58.CheckDecode(addr)
@@ -158,7 +158,7 @@ type BitpayAddressScriptHash struct {
 
 // NewAddressScriptHash returns a new AddressScriptHash.
 func NewBitpayAddressScriptHash(serializedScript []byte, net *chaincfg.Params) (*BitpayAddressScriptHash, error) {
-	scriptHash := btcutil.Hash160(serializedScript)
+	scriptHash := address.Hash160(serializedScript)
 	var v byte
 	if net.Name == chaincfg.MainNetParams.Name {
 		v = bitpayP2SH
@@ -230,7 +230,7 @@ func (a *BitpayAddressScriptHash) Hash160() *[ripemd160.Size]byte {
 
 // PayToAddrScript creates a new script to pay a transaction output to a the
 // specified address.
-func bitpayPayToAddrScript(addr btcutil.Address) ([]byte, error) {
+func bitpayPayToAddrScript(addr address.Address) ([]byte, error) {
 	const nilAddrErrStr = "unable to generate payment script for nil address"
 
 	switch addr := addr.(type) {

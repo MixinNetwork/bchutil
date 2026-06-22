@@ -5,12 +5,12 @@ import (
 	"encoding/hex"
 	"testing"
 
+	"github.com/btcsuite/btcd/address/v2"
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcec/v2/ecdsa"
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/btcsuite/btcd/chaincfg/v2"
+	"github.com/btcsuite/btcd/txscript/v2"
+	"github.com/btcsuite/btcd/wire/v2"
 )
 
 type SigHashVector struct {
@@ -68,13 +68,16 @@ func TestCalulateSigHash(t *testing.T) {
 		}
 		r := bytes.NewReader(raw)
 		msgTx := wire.NewMsgTx(1)
-		msgTx.BtcDecode(r, 1, wire.BaseEncoding)
-		for idx, _ := range msgTx.TxIn {
+		err = msgTx.BtcDecode(r, 1, wire.BaseEncoding)
+		if err != nil {
+			t.Error(err)
+		}
+		for idx := range msgTx.TxIn {
 			pubKeyBytes, err := hex.DecodeString(v.Inputs[idx].Pubkey)
 			if err != nil {
 				t.Error(err)
 			}
-			addr, err := NewCashAddressPubKeyHash(btcutil.Hash160(pubKeyBytes), &chaincfg.MainNetParams)
+			addr, err := NewCashAddressPubKeyHash(address.Hash160(pubKeyBytes), &chaincfg.MainNetParams)
 			if err != nil {
 				t.Error(err)
 			}
